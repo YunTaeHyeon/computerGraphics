@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute vec4 vPosition;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+varying float s, t;
+
+void
+main()
+{
+
+    float pi = acos(0.0); //역코사인 계산 
+
+    s= 0.5*acos(vPosition.x)/pi; //반지름이 r이고 중심이 원점인 원 위의 한 점의 위치를 구하기 위해
+
+    t = 0.5*asin(vPosition.y/sqrt(1.0-vPosition.x*vPosition.x))/pi;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition; //한 점의 위치
+
+
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float; //정밀도 계산
+
+varying float s, t; 
+uniform sampler2D texture;
+
+void
+main()
+{
+
+    gl_FragColor = texture2D( texture, vec2(s, t)); //단면 설정
+
+}
+</script>
+<p> </p>
+<button id = "Button1">왼쪽으로 돌기</button>
+<button id = "Button2">오른쪽으로 돌기</button>
+<button id = "Button3">phi 증가</button>
+<button id = "Button4">phi 감소</button>
+<script type="text/javascript" src="webgl-utils.js"></script>
+<script type="text/javascript" src="initShaders.js"></script>
+
+<script type="text/javascript" src="MV.js"></script>
+<script type="text/javascript" src="globe.js"></script>
+<body>
+<canvas id="gl-canvas" width="800" height="800"> //그림 그리는 캔버스 생성
+Fail...
+</canvas>
+<img id = "map" src = "map.png" hidden></img>
+</body>
+</html>
